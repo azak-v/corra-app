@@ -1,11 +1,26 @@
+import sweetalert from "sweetalert";
+import { Api } from "../../../services/api";
 import IProvas from "../../../types/IProvas";
 import { CardProva, CardProvaDatas, CardProvaHeader, CardProvaInfo, CardProvaTipos } from "./styles";
 
+
 interface ProvaProps {
-	prova: IProvas;
+	prova: IProvas | any;
 }
 
 const Categoria = ({ prova }: ProvaProps) => {
+    const excluir = (provaExcluida: IProvas) => {
+      if (provaExcluida?.id) {
+        Api.delete(`provas/${provaExcluida.id}`)
+          .then(() => {
+            sweetalert("prova excluída com sucesso!");
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.log("Erro ao excluir prova:", error);
+          });
+      }
+    };
 	return (
 		<>
                         <CardProva>
@@ -18,19 +33,26 @@ const Categoria = ({ prova }: ProvaProps) => {
                     <CardProvaInfo>
                         <CardProvaTipos>
                             <span style={{color: "rgb(152, 100, 201)"}}>Tipo</span>
-                            <p>Tipo da prova: {prova.tipo}</p>
+                            <p>{prova.tipo}</p>
                         </CardProvaTipos>
             
                         <CardProvaDatas>     
                             <span style={{color: "rgb(152, 100, 201)"}}>Data</span>
-                            <p>Data da prova: {prova.dataProgramada}</p>
+                            <p>{prova.dataProgramada}</p>
                         </CardProvaDatas>
 
                         <CardProvaDatas>     
-                            <span style={{color: "rgb(152, 100, 201)"}}>Data</span>
-                            <p>peso: {prova.peso}</p>
+                            <span style={{color: "rgb(152, 100, 201)"}}>Peso</span>
+                            <p>{prova.peso}</p>
+                            <p>{prova.id}</p>
+                        </CardProvaDatas>
+
+                        <CardProvaDatas>     
+                            <span style={{color: "rgb(152, 100, 201)"}}>Id</span>
+                            <p>{prova.id}</p>
                         </CardProvaDatas>
                     </CardProvaInfo>
+                    <button onClick={() => excluir(prova)}>Excluir prova</button>
                 </div>
             </CardProva>
 					</>

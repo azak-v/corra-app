@@ -3,6 +3,7 @@ import { useProvas } from "../../Contexts/ProvasContext";
 import { ArticleContainer, ArticleTitle, AsideContainer, ContentContainer, EmailPerfil, FotoPerfil, InfoPerfil, MaisInfoPerfil, NomePerfil, PerfilInfoContainer } from "./styles"
 import Provas from "../Provas/getProvas/Provas";
 import PostProvas from "../Provas/postProvas/PostProvas";
+import PutProvas from "../Provas/putProvas/putProvas";
 
 
 export const Content = () => {
@@ -41,8 +42,7 @@ export const Content = () => {
             <hr/>
             <br/>
            <PostProvas />
-            <button>Editar Prova</button>
-            <button>Excluir Prova</button>
+           <PutProvas />
             {allProvas?.map((item) => (
 					<Provas prova={item} key={item.id} />
 				))}

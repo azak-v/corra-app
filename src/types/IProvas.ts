@@ -1,5 +1,5 @@
 export default interface IProvas {
-    id?: number;
+    id: number;
     dataProgramada: string, 
     tipo: string, 
     peso: number , 

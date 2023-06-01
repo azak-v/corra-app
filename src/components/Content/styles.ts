@@ -9,7 +9,6 @@ export const AsideContainer = styled.aside`
     width: 30%;
     background-color: #2A1E47;
     padding: 20px;
-    height:100vh;
 `
 
 export const PerfilInfoContainer = styled.div`
