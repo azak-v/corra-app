@@ -1,9 +1,20 @@
-import { ArticleContainer, ArticleTitle, AsideContainer, CardProva, CardProvaDatas, CardProvaHeader, CardProvaInfo, CardProvaTipos, ContentContainer, EmailPerfil, FotoPerfil, InfoPerfil, MaisInfoPerfil, NomePerfil, PerfilInfoContainer } from "./styles"
+import { useEffect } from "react";
+import { useProvas } from "../../Contexts/ProvasContext";
+import { ArticleContainer, ArticleTitle, AsideContainer, ContentContainer, EmailPerfil, FotoPerfil, InfoPerfil, MaisInfoPerfil, NomePerfil, PerfilInfoContainer } from "./styles"
+import Provas from "../Provas/getProvas/Provas";
+import PostProvas from "../Provas/postProvas/PostProvas";
 
 
 export const Content = () => {
+    const {allProvas, getProvas} = useProvas(); 
+
+    useEffect(() => {
+		getProvas(); 
+	}, []);
+
   return (
     <ContentContainer>
+        
         <AsideContainer>
             <PerfilInfoContainer>
                 <div>
@@ -26,30 +37,15 @@ export const Content = () => {
         </AsideContainer>
 
         <ArticleContainer>
-            <ArticleTitle>Calendário de avalialções</ArticleTitle>
+            <ArticleTitle>Calendário de avaliações</ArticleTitle>
             <hr/>
             <br/>
-            <CardProva>
-                <div>
-                    <CardProvaHeader>
-                        <h3 style={{color: "rgb(152, 100, 201)"}}>Nome da materia</h3>
-                        <p >Turma ID</p>
-                    </CardProvaHeader>
-
-                    <CardProvaInfo>
-                        <CardProvaTipos>
-                            <span style={{color: "rgb(152, 100, 201)"}}>Tipo</span>
-                            <p>Remoto no Teams</p>
-                        </CardProvaTipos>
-            
-                        <CardProvaDatas>     
-                            <span style={{color: "rgb(152, 100, 201)"}}>Data</span>
-                            <p>13/04/23</p>
-                        </CardProvaDatas>
-                    </CardProvaInfo>
-                </div>
-            </CardProva>
-        
+           <PostProvas />
+            <button>Editar Prova</button>
+            <button>Excluir Prova</button>
+            {allProvas?.map((item) => (
+					<Provas prova={item} key={item.id} />
+				))}
         </ArticleContainer>    
     </ContentContainer>
   )
