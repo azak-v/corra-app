@@ -15,7 +15,7 @@ export const PerfilInfoContainer = styled.div`
     display: flex;
     background-color: #211834;
     border-radius: 10px;
-    padding: 10px;
+    padding: 30px 30px 30px 30px;
 `
 
 export const FotoPerfil = styled.img`
@@ -32,6 +32,11 @@ export const InfoPerfil = styled.div`
 export const NomePerfil = styled.p`
     font-size: 25px;
     color: #e1e1e6;
+    padding-bottom: 10px;
+
+    span{
+        font-weight: bold;
+    }
 `
 
 export const MaisInfoPerfil = styled.div`
@@ -47,12 +52,21 @@ export const EmailPerfil = styled.p`
 
 export const ArticleContainer = styled.article`
     margin: 4% 4%;
-    width: 50%;
+    width: 100%;
 `
 
 export const ArticleTitle = styled.h1`
     color: #f4f4fa;
     font-family: 'Quicksand', sans-serif;
+`
+
+export const ProvasContent = styled.div`
+    margin-top: 10px;
+`
+
+export const Container = styled.div`
+    display: flex;
+    flex-direction: column;
 `
 
 

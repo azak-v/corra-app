@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import { useProvas } from "../../Contexts/ProvasContext";
-import { ArticleContainer, ArticleTitle, AsideContainer, ContentContainer, EmailPerfil, FotoPerfil, InfoPerfil, MaisInfoPerfil, NomePerfil, PerfilInfoContainer } from "./styles"
+import { ArticleContainer, ArticleTitle, Container, AsideContainer, ContentContainer, EmailPerfil, FotoPerfil, InfoPerfil, MaisInfoPerfil, NomePerfil, PerfilInfoContainer, ProvasContent } from "./styles"
 import Provas from "../Provas/getProvas/Provas";
 import PostProvas from "../Provas/postProvas/PostProvas";
-import PutProvas from "../Provas/putProvas/putProvas";
-
 
 export const Content = () => {
     const {allProvas, getProvas} = useProvas(); 
@@ -26,27 +24,36 @@ export const Content = () => {
                 </div>
 
                 <InfoPerfil>
-                    <NomePerfil>Victor Principe</NomePerfil>
+                    <NomePerfil>
+                        <span>Professor: </span> Victor Principe
+                    </NomePerfil>
                     <MaisInfoPerfil>
-                        <span>525.3265/02</span> <span style={{color: 'rgb(130, 28, 225)'}}>/RA</span>
-                        <p> <span style={{color: 'rgb(130, 28, 225)' }}> 3º </span>Ciclo</p>
+                        <span>525.3265/02</span> <span style={{color: 'rgb(130, 28, 225)'}}>/ID</span>
+                        <p> <span style={{color: 'rgb(130, 28, 225)' }}> Materia Responsável:  </span>Progamação com Arduínos</p>
                        <EmailPerfil>victorprincipe@fatec.sp.gov.br</EmailPerfil>
                     </MaisInfoPerfil>
                 </InfoPerfil>
 
             </PerfilInfoContainer>
         </AsideContainer>
-
+        <Container>
+        <PostProvas />
         <ArticleContainer>
             <ArticleTitle>Calendário de avaliações</ArticleTitle>
             <hr/>
             <br/>
-           <PostProvas />
-           <PutProvas />
+           {allProvas?.length > 0 ? 
+           <ProvasContent>
             {allProvas?.map((item) => (
+                <div>
 					<Provas prova={item} key={item.id} />
+                    
+                </div>
 				))}
+           </ProvasContent>
+            : <ProvasContent>Não há nada para mostrar</ProvasContent>}
         </ArticleContainer>    
+        </Container>
     </ContentContainer>
   )
 }

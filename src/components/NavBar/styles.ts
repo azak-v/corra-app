@@ -21,4 +21,5 @@ export const NomeContainer = styled.div`
 text-align: right;
 width:100%;
 color:white;
+margin: 20px 20px 20px 20px;
 `

@@ -1,20 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Api } from "../../../services/api";
 import IProvas from "../../../types/IProvas";
 import sweetalert from "sweetalert";
+import { BotaoAdicionar, InputForm, PutProva } from "./styles";
+// import { format } from "date-fns";
 
-
-export default function postProvas(){
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+export default function PostProvas(){
     const [DataProgramada, setDataProgramada] = useState("");
-	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [Tipo, setTipo] = useState("");
-	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [Peso, setPeso] = useState("");
-	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [Turma, setTurma] = useState("");
+    const [isFormValid, setIsFormValid] = useState(false); 
+    // const dataProgramadaFormatted = format(new Date(DataProgramada), "yyyy-MM-dd");
 
-    
     const onFormSubmit = () => {
         Api.post<IProvas>("/provas", {
             dataProgramada: DataProgramada,
@@ -32,40 +30,59 @@ export default function postProvas(){
          })
     }
 
+      const checkFormValidity = () => {
+        if (DataProgramada && Tipo && Peso && Turma) {
+            setIsFormValid(true);
+        } else {
+            setIsFormValid(false);
+        }
+    };
+
+    useEffect(() => {
+        checkFormValidity();
+    }, [DataProgramada, Tipo, Peso, Turma, checkFormValidity]);
+
+
     return (
-        <div>
-            <input type="text" 
+        <PutProva>
+            <p>Formulário de Cadastro de Prova</p>
+            <InputForm type="text" 
             placeholder="Data programada"
             required
             onChange={(evento) =>
                 setDataProgramada(evento.target.value)
             }
             />
-            <input 
+            <InputForm 
                 type="text" 
                 placeholder="Digite o tipo da prova"
                 required
                 onChange={(evento) =>
                     setTipo(evento.target.value)
                 }/>
-            <input 
+            <InputForm 
                 type="text" 
                 placeholder="Digite o peso da prova"
                 required
                 onChange={(evento) =>
                     setPeso(evento.target.value)
                 }/>
-            <input 
+            <InputForm 
                 type="text" 
                 placeholder="Digite a turma"
                 required 
                 onChange={(evento) =>
                     setTurma(evento.target.value)
                 }/>
-                <button type="button" onClick={() => onFormSubmit()}>
-					Adicionar Prova
-				</button>
-        </div>
+                <BotaoAdicionar 
+                    type="button" 
+                    onClick={() => onFormSubmit()}  
+                    className={isFormValid ? "" : "disabled"}
+                    disabled={!isFormValid}
+                >
+					<p>Adicionar Prova</p>
+				</BotaoAdicionar>
+        </PutProva>
     )
 }
 

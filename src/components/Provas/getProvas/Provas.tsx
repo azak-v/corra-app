@@ -1,14 +1,38 @@
 import sweetalert from "sweetalert";
 import { Api } from "../../../services/api";
 import IProvas from "../../../types/IProvas";
-import { CardProva, CardProvaDatas, CardProvaHeader, CardProvaInfo, CardProvaTipos } from "./styles";
+import { AtualizarProva, BotaoEditar, BotaoExcluir, CardProva, CardProvaDatas, CardProvaHeader, CardProvaInfo, CardProvaTipos, EditarProva } from "./styles";
+import { useContext, useEffect, useState } from "react";
 
 
 interface ProvaProps {
 	prova: IProvas | any;
 }
 
-const Categoria = ({ prova }: ProvaProps) => {
+const Prova = ({ prova }: ProvaProps) => {
+    const [DataProgramada, setDataProgramada] = useState("");
+	const [Tipo, setTipo] = useState("");
+	const [Peso, setPeso] = useState("");
+    const [isFormValid, setIsFormValid] = useState(false); 
+
+    const onFormSubmit = () => {
+        Api.put<IProvas>(`/provas/${prova?.id}`, {
+            dataProgramada: DataProgramada,
+            tipo: Tipo, 
+            peso: Number(Peso),
+            idTurma: prova.turmaId
+        })
+        .then(() => {
+            sweetalert("Prova atualizada com sucesso.");
+            
+            window.location.reload();
+		})
+		.catch((error) => {
+            console.log({data: error}) 
+            sweetalert('não foi possivel atualizar a prova!')   
+         })
+    }
+
     const excluir = (provaExcluida: IProvas) => {
       if (provaExcluida?.id) {
         Api.delete(`provas/${provaExcluida.id}`)
@@ -21,6 +45,19 @@ const Categoria = ({ prova }: ProvaProps) => {
           });
       }
     };
+
+    const checkFormValidity = () => {
+        if (DataProgramada && Tipo && Peso) {
+            setIsFormValid(true);
+        } else {
+            setIsFormValid(false);
+        }
+    };
+
+    useEffect(() => {
+        checkFormValidity();
+    }, [DataProgramada, Tipo, Peso, checkFormValidity]);
+
 	return (
 		<>
                         <CardProva>
@@ -52,7 +89,38 @@ const Categoria = ({ prova }: ProvaProps) => {
                             <p>{prova.id}</p>
                         </CardProvaDatas>
                     </CardProvaInfo>
-                    <button onClick={() => excluir(prova)}>Excluir prova</button>
+                    <AtualizarProva>
+                        <p>Atualizar Dados da Prova</p>
+                        <EditarProva type="text" 
+                        placeholder="Data programada"
+                        required
+                        onChange={(evento) =>
+                            setDataProgramada(evento.target.value)
+                        }
+                        />
+                        <EditarProva 
+                            type="text" 
+                            placeholder="Digite o tipo da prova"
+                            required
+                            onChange={(evento) =>
+                                setTipo(evento.target.value)
+                            }/>
+                        <EditarProva 
+                            type="text" 
+                            placeholder="Digite o peso da prova"
+                            required
+                            onChange={(evento) =>
+                                setPeso(evento.target.value)
+                            }/>
+                            <BotaoEditar 
+                                type="button" 
+                                onClick={() => onFormSubmit()}
+                                className={isFormValid ? "" : "disabled"}
+                                disabled={!isFormValid}>
+                                Editar Prova
+                            </BotaoEditar>
+                    </AtualizarProva>
+                    <BotaoExcluir onClick={() => excluir(prova)}>Excluir prova</BotaoExcluir>
                 </div>
             </CardProva>
 					</>
@@ -60,4 +128,4 @@ const Categoria = ({ prova }: ProvaProps) => {
 	);
 };
 
-export default Categoria;
+export default Prova;
